@@ -21,6 +21,10 @@ export const shipmentsSlice = createSlice({
     shipmentChanged(state, action) {
       state.orders[state.viewingShipment.index] = action.payload;
     },
+
+    shipmentDeleted(state, action) {
+      state.orders.splice(action.payload.index, 1);
+    }
   },
   extraReducers(builder) {
     builder
@@ -29,12 +33,12 @@ export const shipmentsSlice = createSlice({
       })
       .addCase(fetchShipments.fulfilled, (state, action) => {
         state.status = "succeeded";
-        state.orders = state.orders.concat(action.payload);
+        state.orders = action.payload;
       })
       .addCase(fetchShipments.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.error.message;
-        state.orders = state.orders.concat(shipments);
+        state.orders = shipments;
       });
   },
 });
@@ -48,20 +52,6 @@ export const fetchShipments = createAsyncThunk("shipments/fetchShipments", async
 
 export const selectAllOrders = (state) => state.shipments.orders;
 
-export const { shipmentViewed } = shipmentsSlice.actions;
+export const { shipmentViewed, shipmentChanged, shipmentDeleted } = shipmentsSlice.actions;
 
 export default shipmentsSlice.reducer;
-
-// function changeOrder(order) {
-//   setData(
-//     data.map((currOrder, orderIndex) => {
-//       if (orderIndex === viewingOrderIndex) {
-//         return order;
-//       } else {
-//         return currOrder;
-//       }
-//     })
-//   );
-
-//   setShowModal(false);
-// }

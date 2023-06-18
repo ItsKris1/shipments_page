@@ -1,6 +1,12 @@
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { shipmentChanged } from "./features/shipments/shipmentsSlice";
 
-export function EditOrderForm({ viewingOrder, onOrderChanged }) {
+export function EditOrderForm({ closeModal }) {
+  const viewingOrder = useSelector(state => state.shipments.viewingShipment.data);
+
+  const dispatch = useDispatch();
+
   const [formData, setFormData] = useState({
     orderNo: viewingOrder.orderNo,
     date: viewingOrder.date,
@@ -9,6 +15,8 @@ export function EditOrderForm({ viewingOrder, onOrderChanged }) {
     consignee: viewingOrder.consignee,
     status: viewingOrder.status,
   });
+
+  console.log("Viewing order: ", formData);
 
   function handleChange(e) {
     setFormData((prevState) => {
@@ -19,7 +27,8 @@ export function EditOrderForm({ viewingOrder, onOrderChanged }) {
     <form
       onSubmit={(e) => {
         e.preventDefault();
-        onOrderChanged(formData);
+        dispatch(shipmentChanged(formData))
+        closeModal();
       }}
     >
       <label>

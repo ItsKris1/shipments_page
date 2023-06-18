@@ -3,19 +3,16 @@ import { useEffect, useState } from "react";
 import { Modal } from "./Modal";
 import { EditOrderForm } from "./EditOrder";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchShipments, getShipments, selectAllOrders, shipmentViewed } from "./features/shipments/shipmentsSlice";
-import shipments from "./shipments.json";
+import { fetchShipments, shipmentViewed, shipmentDeleted } from "./features/shipments/shipmentsSlice";
 
 function App() {
   const [showModal, setShowModal] = useState(false);
-  // const [viewingOrder, setViewingOrder] = useState(null);
-  // const [viewingOrderIndex, setViewingOrderIndex] = useState(0);
+
   const dispatch = useDispatch();
 
   const status = useSelector((state) => state.shipments.status);
-  let data = useSelector((state) => state.shipments.orders);
-  const error = useSelector((state) => state.shipments.error);
-  const viewingShipment = useSelector((state) => state.shipments.viewingShipment);
+  const data = useSelector((state) => state.shipments.orders);
+  // const error = useSelector((state) => state.shipments.error);
 
   useEffect(() => {
     if (status === "idle") {
@@ -25,14 +22,12 @@ function App() {
 
   if (status === "loading") {
     return <h1>Loading...</h1>;
-  } else if (status === "failed") {
-    console.log("Failed requesting data. Error: ", error);
-    data = shipments;
   }
 
-  // function deleteOrder(orderNo) {
-  //   setData(data.filter((order) => order.orderNo !== orderNo));
+  // else if (status === "failed") {
+  //   console.error("Failed to get data from API", error);
   // }
+
 
   function createTableData(data, index) {
     return (
@@ -49,15 +44,12 @@ function App() {
               onClick={(e) => {
                 e.stopPropagation();
                 setShowModal(true);
-                // setViewingOrder(data);
-                // setViewingOrderIndex(index);
-
                 dispatch(shipmentViewed({ data, index }));
               }}
             >
               View
             </button>
-            {/* <button onClick={() => deleteOrder(data.orderNo)}>Delete</button> */}
+            <button onClick={() => dispatch(shipmentDeleted({ index }))}>Delete</button>
           </div>
         </td>
       </tr>
@@ -66,12 +58,10 @@ function App() {
 
   return (
     <div className="App">
-      {showModal ? (
+      {showModal && (
         <Modal onModalClose={() => setShowModal(false)}>
-          <EditOrderForm></EditOrderForm>
+          <EditOrderForm closeModal={() => setShowModal(false)}></EditOrderForm>
         </Modal>
-      ) : (
-        ""
       )}
 
       <table>
