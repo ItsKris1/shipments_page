@@ -3,7 +3,8 @@ import { useEffect, useState } from "react";
 import { Modal } from "./Modal";
 import { EditOrderForm } from "./EditOrder";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchShipments, shipmentViewed, shipmentDeleted } from "./features/shipments/shipmentsSlice";
+import { fetchShipments, } from "./features/shipments/shipmentsSlice";
+import { Shipment } from "./Shipment";
 
 function App() {
   const [showModal, setShowModal] = useState(false);
@@ -11,7 +12,7 @@ function App() {
   const dispatch = useDispatch();
 
   const status = useSelector((state) => state.shipments.status);
-  const data = useSelector((state) => state.shipments.orders);
+  const shipments = useSelector((state) => state.shipments.orders);
   // const error = useSelector((state) => state.shipments.error);
 
   useEffect(() => {
@@ -28,33 +29,6 @@ function App() {
   //   console.error("Failed to get data from API", error);
   // }
 
-
-  function createTableData(data, index) {
-    return (
-      <tr key={data.orderNo}>
-        <td>{data.orderNo}</td>
-        <td>{data.date}</td>
-        <td>{data.customer}</td>
-        <td>{data.trackingNo}</td>
-        <td>{data.status}</td>
-        <td>{data.consignee}</td>
-        <td>
-          <div>
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                setShowModal(true);
-                dispatch(shipmentViewed({ data, index }));
-              }}
-            >
-              View
-            </button>
-            <button onClick={() => dispatch(shipmentDeleted({ index }))}>Delete</button>
-          </div>
-        </td>
-      </tr>
-    );
-  }
 
   return (
     <div className="App">
@@ -76,7 +50,7 @@ function App() {
             <td></td>
           </tr>
 
-          {data?.map((order, index) => createTableData(order, index))}
+          {shipments?.map((shipment, index) => <Shipment data={shipment} index={index} onShowModal={() => setShowModal(true)}></Shipment>)}
         </tbody>
       </table>
     </div>
