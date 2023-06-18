@@ -1,4 +1,4 @@
-.Modal {
+/* .Modal {
   position: absolute;
   top: 0;
   left: 0;
@@ -16,7 +16,6 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  /* height: 300px; */
 }
 
 .ModalContent form {
@@ -29,7 +28,7 @@
 
 .ModalContent form .Note-body {
   flex: 1;
-}
+} */
 
 /* .ModalContent input,
 .ModalContent textarea {
