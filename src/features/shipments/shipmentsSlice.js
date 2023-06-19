@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, rejectWithValue } from "@reduxjs/toolkit";
 import axios from "axios";
 import shipments from "../../shipments.json";
 
@@ -37,17 +37,21 @@ export const shipmentsSlice = createSlice({
       })
       .addCase(fetchShipments.rejected, (state, action) => {
         state.status = "failed";
-        state.error = action.error.message;
+        state.error = action.payload.error;
         state.orders = shipments;
       });
   },
 });
 
-export const fetchShipments = createAsyncThunk("shipments/fetchShipments", async () => {
+export const fetchShipments = createAsyncThunk("shipments/fetchShipments", async (_, { rejectWithValue }) => {
   const apiURL = "https://my.api.mockaroo.com/shipments.json?key=5e0b62d0";
-  const response = await axios.get(apiURL);
-  const data = await response.json();
-  return data;
+  try {
+    const response = await axios.get(apiURL);
+    const data = await response.json();
+    return data;
+  } catch (e) {
+    return rejectWithValue(e.response.data);
+  }
 });
 
 export const { shipmentViewed, shipmentChanged, shipmentDeleted } = shipmentsSlice.actions;

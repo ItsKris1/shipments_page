@@ -16,13 +16,17 @@ function App() {
 
   const status = useSelector((state) => state.shipments.status);
   const shipments = useSelector((state) => state.shipments.orders);
-  // const error = useSelector((state) => state.shipments.error);
+  const error = useSelector((state) => state.shipments.error);
 
   useEffect(() => {
     if (status === "idle") {
       dispatch(fetchShipments());
     }
-  }, [dispatch, status]);
+
+    if (status === "failed") {
+      console.error("Failed to get data from API: ", error);
+    }
+  }, [dispatch, status, error]);
 
   if (status === "loading") {
     return <h1>Loading...</h1>;
@@ -31,10 +35,6 @@ function App() {
   function toggleModal() {
     setShowModal(!showModal);
   }
-
-  // else if (status === "failed") {
-  //   console.error("Failed to get data from API", error);
-  // }
 
   return (
     <div className="App">
@@ -68,7 +68,7 @@ function App() {
         </thead>
         <tbody>
           {shipments?.map((shipment, index) => (
-            <Shipment data={shipment} index={index} onShowModal={() => setShowModal(true)}></Shipment>
+            <Shipment data={shipment} key={shipment.orderNo} index={index} onEdit={toggleModal}></Shipment>
           ))}
         </tbody>
       </Table>
