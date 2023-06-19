@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import { EditOrderForm } from "./EditOrder";
+import { EditShipmentForm } from "./EditShipmentForm";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchShipments } from "../features/shipments/shipmentsSlice";
 import { Shipment } from "./Shipment";
 
-import { Table, Button, Modal, ModalBody, Card, CardBody } from "reactstrap";
+import { Table, Modal, ModalBody } from "reactstrap";
 
 import "assets/scss/black-dashboard-react.scss";
 import "assets/css/nucleo-icons.css";
@@ -39,7 +39,7 @@ function App() {
   return (
     <div className="App">
       {showModal && (
-        <Modal isOpen={showModal} toggle={toggleModal}>
+        <Modal isOpen={showModal} toggle={toggleModal} size="lg" className="modalForm">
           <div className="modal-header">
             <h4 className="modal-title" id="exampleModalLabel">
               Shipment details
@@ -50,13 +50,7 @@ function App() {
           </div>
 
           <ModalBody>
-            {/* <Card>
-              <CardBody>
-                <EditOrderForm></EditOrderForm>
-              </CardBody>
-            </Card> */}
-
-            <EditOrderForm onSubmit={toggleModal}></EditOrderForm>
+            <EditShipmentForm onSubmit={toggleModal}></EditShipmentForm>
           </ModalBody>
         </Modal>
       )}

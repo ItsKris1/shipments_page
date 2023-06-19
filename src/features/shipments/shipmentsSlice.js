@@ -24,7 +24,7 @@ export const shipmentsSlice = createSlice({
 
     shipmentDeleted(state, action) {
       state.orders.splice(action.payload.index, 1);
-    }
+    },
   },
   extraReducers(builder) {
     builder
@@ -49,8 +49,6 @@ export const fetchShipments = createAsyncThunk("shipments/fetchShipments", async
   const data = await response.json();
   return data;
 });
-
-export const selectAllOrders = (state) => state.shipments.orders;
 
 export const { shipmentViewed, shipmentChanged, shipmentDeleted } = shipmentsSlice.actions;
 

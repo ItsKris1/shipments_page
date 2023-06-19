@@ -3,14 +3,15 @@
   overflow: auto;
 }
 
-.modal-dialog .modal-content {
+/* Styling for forms inside modal */
+.modalForm .modal-content {
   background-color: #27293d;
 }
 
-#exampleModalLabel {
+.modalForm #exampleModalLabel {
   color: rgb(223, 217, 217);
 }
 
-.editOrderForm .form-group label {
+.modalForm .form-group label {
   color: hsla(0, 0%, 100%, 0.6);
 }
