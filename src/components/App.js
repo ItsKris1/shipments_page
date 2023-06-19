@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { EditOrderForm } from "./EditOrder";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchShipments } from "./features/shipments/shipmentsSlice";
+import { fetchShipments } from "../features/shipments/shipmentsSlice";
 import { Shipment } from "./Shipment";
 
 import { Table, Button, Modal, ModalBody, Card, CardBody } from "reactstrap";
@@ -39,10 +39,6 @@ function App() {
   return (
     <div className="App">
       {showModal && (
-        // <Modal onModalClose={() => setShowModal(false)}>
-        //   <EditOrderForm closeModal={() => setShowModal(false)}></EditOrderForm>
-        // </Modal>
-
         <Modal isOpen={showModal} toggle={toggleModal}>
           <div className="modal-header">
             <h4 className="modal-title" id="exampleModalLabel">
@@ -60,7 +56,7 @@ function App() {
               </CardBody>
             </Card> */}
 
-            <EditOrderForm></EditOrderForm>
+            <EditOrderForm onSubmit={toggleModal}></EditOrderForm>
           </ModalBody>
         </Modal>
       )}
@@ -82,24 +78,6 @@ function App() {
           ))}
         </tbody>
       </Table>
-
-      {/* <table>
-        <tbody>
-          <tr>
-            <td>ORDERNO</td>
-            <td>DELIVERYDATE</td>
-            <td>CUSTOMER</td>
-            <td>TRACKINGNO</td>
-            <td>STATUS</td>
-            <td>CONSIGNEE</td>
-            <td></td>
-          </tr>
-
-          {shipments?.map((shipment, index) => (
-            <Shipment data={shipment} index={index} onShowModal={() => setShowModal(true)}></Shipment>
-          ))}
-        </tbody>
-      </table> */}
     </div>
   );
 }
